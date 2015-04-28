@@ -1,0 +1,43 @@
+﻿<Window x:Class="PrismDataTemplateExample.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:PrismDataTemplateExample.Models"
+        xmlns:prism="clr-namespace:PrismDataTemplateExample.Prism"
+        xmlns:views="clr-namespace:PrismDataTemplateExample.Views"
+        d:DataContext="{d:DesignInstance views:ShellViewModel}"
+        mc:Ignorable="d">
+    <Window.Resources />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TreeView Grid.Column="0"
+                  Margin="5"
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                  ItemsSource="{Binding DataProvider.Data}"
+                  SelectedItemChanged="TreeView_OnSelectedItemChanged">
+            <TreeView.Resources>
+                <prism:PrismHierarchicalDataTemplate DataType="{x:Type models:DataGroup}"
+                                                     ItemsSource="{Binding Items}"
+                                                     ServiceType="views:DataGroupTreeItemView" />
+
+                <prism:PrismDataTemplate DataType="{x:Type models:DataItem}" ServiceType="views:DataItemTreeItemView" />
+            </TreeView.Resources>
+        </TreeView>
+        <Border Grid.Column="1"
+                Margin="5"
+                BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                BorderThickness="1">
+            <ContentControl Margin="5" Content="{Binding SelectedItem}">
+                <ContentControl.Resources>
+                    <prism:PrismDataTemplate DataType="{x:Type models:DataGroup}" ServiceType="views:DataGroupDetailedView" />
+                    <prism:PrismDataTemplate DataType="{x:Type models:DataItem}" ServiceType="views:DataItemDetailedView" />
+                </ContentControl.Resources>
+            </ContentControl>
+        </Border>
+    </Grid>
+</Window>
